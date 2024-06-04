@@ -1,0 +1,38 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Heirloom
+    network: sepolia
+    source:
+      address: "0x84464897824C77C0Ef39Ea611bAD719B66b2e5c6"
+      abi: Heirloom
+      startBlock: 5683199
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ModuleBenefiaryReplaced
+        - ModuleCanceled
+        - ModuleClaimed
+        - ModuleReset
+        - ModuleSet
+      abis:
+        - name: Heirloom
+          file: ./abis/Heirloom.json
+      eventHandlers:
+        - event: ModuleBenefiaryReplaced(indexed address,indexed uint256,address,address)
+          handler: handleModuleBenefiaryReplaced
+        - event: ModuleCanceled(indexed address,indexed uint256,uint256)
+          handler: handleModuleCanceled
+        - event: ModuleClaimed(indexed address,indexed uint256,address)
+          handler: handleModuleClaimed
+        - event: ModuleReset(indexed address,indexed uint256,uint256)
+          handler: handleModuleReset
+        - event: ModuleSet(indexed address,indexed uint256,indexed address,uint256)
+          handler: handleModuleSet
+      file: ./src/heirloom.ts

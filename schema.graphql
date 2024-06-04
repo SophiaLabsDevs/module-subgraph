@@ -1,0 +1,51 @@
+type ModuleBenefiaryReplaced @entity(immutable: true) {
+  id: Bytes!
+  _densityModule: Bytes! # address
+  _moduleId: BigInt! # uint256
+  _previousBeneficiary: Bytes! # address
+  _newBeneficiary: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ModuleCanceled @entity(immutable: true) {
+  id: Bytes!
+  _densityModule: Bytes! # address
+  _moduleId: BigInt! # uint256
+  _timer: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ModuleClaimed @entity(immutable: true) {
+  id: Bytes!
+  _densityModule: Bytes! # address
+  _moduleId: BigInt! # uint256
+  _beneficiary: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ModuleReset @entity(immutable: true) {
+  id: Bytes!
+  _densityModule: Bytes! # address
+  _moduleId: BigInt! # uint256
+  _timer: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ModuleSet @entity(immutable: true) {
+  id: Bytes!
+  _densityModule: Bytes! # address
+  _moduleId: BigInt! # uint256
+  _beneficiary: Bytes! # address
+  _timer: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
