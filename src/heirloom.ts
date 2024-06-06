@@ -1,4 +1,4 @@
-import { Bytes } from '@graphprotocol/graph-ts'
+import { BigInt, Bytes } from '@graphprotocol/graph-ts'
 import {
   ModuleBenefiaryReplaced as ModuleBenefiaryReplacedEvent,
   ModuleCanceled as ModuleCanceledEvent,
@@ -41,6 +41,8 @@ export function handleModuleReset(event: ModuleResetEvent): void {
 
   if (module) {
     module.timer = event.params._timer
+    module.blockTimestamp = event.block.timestamp
+    module.endTimestamp = event.block.timestamp.plus(event.params._timer)
     module.save()
   }
 }
@@ -56,6 +58,9 @@ export function handleModuleSet(event: ModuleSetEvent): void {
     entity.moduleId = event.params._moduleId
     entity.beneficiary = event.params._beneficiary
     entity.timer = event.params._timer
+    entity.blockTimestamp = event.block.timestamp
+    entity.endTimestamp = event.block.timestamp.plus(event.params._timer)
+
     entity.claimed = false
 
     entity.save()
@@ -64,6 +69,9 @@ export function handleModuleSet(event: ModuleSetEvent): void {
     module.moduleId = event.params._moduleId
     module.beneficiary = event.params._beneficiary
     module.timer = event.params._timer
+    module.blockTimestamp = event.block.timestamp
+    module.endTimestamp = event.block.timestamp.plus(event.params._timer)
+
     module.claimed = false
 
     module.save()
