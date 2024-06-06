@@ -1,3 +1,4 @@
+import { Bytes } from '@graphprotocol/graph-ts'
 import {
   ModuleBenefiaryReplaced as ModuleBenefiaryReplacedEvent,
   ModuleCanceled as ModuleCanceledEvent,
@@ -10,7 +11,7 @@ import { Module } from '../generated/schema'
 export function handleModuleBenefiaryReplaced(
   event: ModuleBenefiaryReplacedEvent
 ): void {
-  const id = event.params._moduleId.toString() + event.params._densityModule.toString() //unique identifier -> union of moduleId and densityModule address
+  const id = Bytes.fromUTF8(event.params._moduleId.toString() + event.params._densityModule.toHexString()) //unique identifier -> union of moduleId and densityModule address
   const module = Module.load(id) //locate entry with matching Id
 
   if (module) {
@@ -20,11 +21,12 @@ export function handleModuleBenefiaryReplaced(
 }
 
 export function handleModuleCanceled(event: ModuleCanceledEvent): void {
- 
+ //if canceled by owner
+
 }
 
 export function handleModuleClaimed(event: ModuleClaimedEvent): void {
-  const id = event.params._moduleId.toString() + event.params._densityModule.toString() //unique identifier -> union of moduleId and densityModule address
+  const id = Bytes.fromUTF8(event.params._moduleId.toString() + event.params._densityModule.toHexString()) //unique identifier -> union of moduleId and densityModule address
   const module = Module.load(id) //locate entry with matching Id
 
   if (module) {
@@ -34,7 +36,7 @@ export function handleModuleClaimed(event: ModuleClaimedEvent): void {
 }
 
 export function handleModuleReset(event: ModuleResetEvent): void {
-  const id = event.params._moduleId.toString() + event.params._densityModule.toString() //unique identifier -> union of moduleId and densityModule address
+  const id = Bytes.fromUTF8(event.params._moduleId.toString() + event.params._densityModule.toHexString()) //unique identifier -> union of moduleId and densityModule address
   const module = Module.load(id) //locate entry with matching Id
 
   if (module) {
@@ -44,7 +46,7 @@ export function handleModuleReset(event: ModuleResetEvent): void {
 }
 
 export function handleModuleSet(event: ModuleSetEvent): void {
-  const id = event.params._moduleId.toString() + event.params._densityModule.toString()
+  const id = Bytes.fromUTF8(event.params._moduleId.toString() + event.params._densityModule.toHexString())
 
   const module = Module.load(id) //locate entry with matching Id
 
@@ -62,6 +64,7 @@ export function handleModuleSet(event: ModuleSetEvent): void {
     module.moduleId = event.params._moduleId
     module.beneficiary = event.params._beneficiary
     module.timer = event.params._timer
+    module.claimed = false
 
     module.save()
   }
