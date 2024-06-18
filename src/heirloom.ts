@@ -1,4 +1,4 @@
-import { BigInt, Bytes } from '@graphprotocol/graph-ts'
+import { Bytes, store } from '@graphprotocol/graph-ts'
 import {
   ModuleBenefiaryReplaced as ModuleBenefiaryReplacedEvent,
   ModuleCanceled as ModuleCanceledEvent,
@@ -8,9 +8,7 @@ import {
 } from '../generated/Heirloom/Heirloom'
 import { Module } from '../generated/schema'
 
-export function handleModuleBenefiaryReplaced(
-  event: ModuleBenefiaryReplacedEvent
-): void {
+export function handleModuleBenefiaryReplaced(event: ModuleBenefiaryReplacedEvent): void {
   const id = Bytes.fromUTF8(event.params._moduleId.toString() + event.params._densityModule.toHexString()) //unique identifier -> union of moduleId and densityModule address
   const module = Module.load(id) //locate entry with matching Id
 
@@ -21,8 +19,13 @@ export function handleModuleBenefiaryReplaced(
 }
 
 export function handleModuleCanceled(event: ModuleCanceledEvent): void {
- //if canceled by owner
+  //if canceled by owner remove entity
+  const id = Bytes.fromUTF8(event.params._moduleId.toString() + event.params._densityModule.toHexString())
 
+  const module = Module.load(id) //locate entry with matching Id
+  if (module) {
+    store.remove('Module', id.toHex())
+  }
 }
 
 export function handleModuleClaimed(event: ModuleClaimedEvent): void {
